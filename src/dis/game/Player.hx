@@ -11,15 +11,15 @@ class Player extends Obj {
   public static inline var SPEED = 100;
 
   public function new(?parent : Object) {
-    var sprite = new Bitmap(Tile.fromColor(0xcc0000, 16, 48));
-    super(sprite, null, null, parent);
+    var sprite = new Bitmap(Tile.fromColor(0xcc0000, Grid.SIZE, Grid.SIZE));
+    super(sprite, Grid.COLLIDER_SIZE, null, parent);
   }
 
-  public override function update(dt : Float) {
-    updateMovement(dt);
+  public function updateWithColliders(dt : Float, colliders : Array<Obj>) {
+    updateMovement(dt, colliders);
   }
 
-  function updateMovement(dt : Float) {
+  function updateMovement(dt : Float, colliders : Array<Obj>) {
     var dx = 0;
     var dx_actual = 0.0;
     var dy = 0;
@@ -46,6 +46,15 @@ class Player extends Obj {
 
       x += dx_actual;
       y += dy_actual;
+
+      for (collider in colliders) {
+        if (collider.collided(this)) {
+          x -= dx_actual;
+          y -= dy_actual;
+
+          break;
+        }
+      }
     }
   }
 }

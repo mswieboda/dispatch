@@ -1,5 +1,7 @@
 package dis.scene;
 
+import dis.game.Grid;
+
 import hxt.input.Input;
 import hxt.obj2d.Obj;
 import hxt.scene.Stage;
@@ -19,7 +21,7 @@ class MainScene extends GameScene {
     super(stage, "dispatch");
 
     // background trees
-    var objTile = Tile.fromColor(0x00cc00, 16, 64);
+    var objTile = Tile.fromColor(0x00cc00, Grid.SIZE, Grid.SIZE);
     var objsData = [
       {x: 100, y: 200},
       {x: 500, y: 300},
@@ -28,9 +30,11 @@ class MainScene extends GameScene {
 
     for (objData in objsData) {
       var objSprite = new Bitmap(objTile, s2d);
-      var obj = new Obj(objSprite, null, null, s2d);
+      var obj = new Obj(objSprite, Grid.COLLIDER_SIZE, null, s2d);
       obj.x = objData.x;
       obj.y = objData.y;
+
+      colliders.push(obj);
     }
 
     var glowObjSprite = new Bitmap(objTile, s2d);
@@ -38,6 +42,7 @@ class MainScene extends GameScene {
     glowObj.x = 500;
     glowObj.y = 300;
     glowObj.filter = new h2d.filter.Glow(0xff6600);
+    colliders.push(glowObj);
 
     player.x = 500;
     player.y = 500;

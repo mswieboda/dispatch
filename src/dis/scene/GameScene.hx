@@ -3,6 +3,7 @@ package dis.scene;
 import dis.game.HeadsUpDisplay;
 import dis.game.Player;
 
+import hxt.obj2d.Obj;
 import hxt.input.Input;
 import hxt.scene.Stage;
 import hxt.scene.Scene;
@@ -17,6 +18,8 @@ class GameScene extends Scene {
 
   var player : Player;
   var hud : HeadsUpDisplay;
+  var colliders : Array<Obj>;
+
   var trOverlay : Object;
   var trText : Text;
   var isTrDone = false;
@@ -50,6 +53,7 @@ class GameScene extends Scene {
 
     player = new Player(s2d);
     hud = new HeadsUpDisplay(player, s2d);
+    colliders = new Array<Obj>();
   }
 
   public override function update(dt: Float) {
@@ -61,7 +65,7 @@ class GameScene extends Scene {
         trDone(dt);
       }
     } else {
-      player.update(dt);
+      player.updateWithColliders(dt, colliders);
       hud.update(dt);
     }
 
